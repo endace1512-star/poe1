@@ -1,0 +1,133 @@
+{
+ "core": {
+  "items": [
+   {
+    "id": "chaos",
+    "name": "Chaos Orb",
+    "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lSZXJvbGxSYXJlIiwic2NhbGUiOjF9XQ/46a2347805/CurrencyRerollRare.png",
+    "category": "Currency",
+    "detailsId": "chaos-orb"
+   },
+   {
+    "id": "divine",
+    "name": "Divine Orb",
+    "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lNb2RWYWx1ZXMiLCJzY2FsZSI6MX1d/ec48896769/CurrencyModValues.png",
+    "category": "Currency",
+    "detailsId": "divine-orb"
+   }
+  ],
+  "rates": {
+   "divine": 0.00448
+  },
+  "primary": "chaos",
+  "secondary": "divine"
+ },
+ "lines": [
+  {
+   "id": "chaos",
+   "primaryValue": 1,
+   "volumePrimaryValue": 13992311,
+   "maxVolumeCurrency": "divine",
+   "maxVolumeRate": 223.2,
+   "sparkline": {
+    "totalChange": -73.55,
+    "data": [
+     -42.92,
+     -59.17,
+     -60.77,
+     -66.9,
+     -72.59,
+     -73.21,
+     -73.55
+    ]
+   }
+  },
+  {
+   "id": "divine",
+   "primaryValue": 223.2,
+   "volumePrimaryValue": 13992311,
+   "maxVolumeCurrency": "chaos",
+   "maxVolumeRate": 0.00448,
+   "sparkline": {
+    "totalChange": 255.2,
+    "data": [
+     65.62,
+     130.7,
+     139.8,
+     184.8,
+     243.2,
+     250.8,
+     255.2
+    ]
+   }
+  },
+  {
+   "id": "alt",
+   "primaryValue": 0.2236,
+   "volumePrimaryValue": 175110,
+   "maxVolumeCurrency": "chaos",
+   "maxVolumeRate": 4.47,
+   "sparkline": {
+    "totalChange": 375.2,
+    "data": [
+     72.08,
+     87.16,
+     90.48,
+     132.9,
+     198.4,
+     263.2,
+     375.2
+    ]
+   }
+  },
+  {
+   "id": "exalted",
+   "primaryValue": 0.7619,
+   "volumePrimaryValue": 81089,
+   "maxVolumeCurrency": "chaos",
+   "maxVolumeRate": 1.31,
+   "sparkline": {
+    "totalChange": 99.41,
+    "data": [
+     26.17,
+     51.16,
+     104.8,
+     130.3,
+     135.5,
+     108.0,
+     99.41
+    ]
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "chaos",
+   "name": "Chaos Orb",
+   "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lSZXJvbGxSYXJlIiwic2NhbGUiOjF9XQ/46a2347805/CurrencyRerollRare.png",
+   "category": "Currency",
+   "detailsId": "chaos-orb"
+  },
+  {
+   "id": "divine",
+   "name": "Divine Orb",
+   "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lNb2RWYWx1ZXMiLCJzY2FsZSI6MX1d/ec48896769/CurrencyModValues.png",
+   "category": "Currency",
+   "detailsId": "divine-orb"
+  },
+  {
+   "id": "alt",
+   "name": "Orb of Alteration",
+   "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lSZXJvbGxNYWdpYyIsInNjYWxlIjoxfV0/6308fc8ca2/CurrencyRerollMagic.png",
+   "category": "Currency",
+   "detailsId": "orb-of-alteration"
+  },
+  {
+   "id": "exalted",
+   "name": "Exalted Orb",
+   "image": "/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lBZGRNb2RUb1JhcmUiLCJzY2FsZSI6MX1d/33f2656aea/CurrencyAddModToRare.png",
+   "category": "Currency",
+   "detailsId": "exalted-orb"
+  }
+ ]
+}

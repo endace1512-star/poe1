@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Poe1.Server/Poe1.Server.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Poe1.Tests/Poe1.Tests.csproj" />
+  </Folder>
+</Solution>

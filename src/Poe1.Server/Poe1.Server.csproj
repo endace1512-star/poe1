@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Poe1</RootNamespace>
+    <AssemblyName>poe1</AssemblyName>
+    <Version>0.1.0</Version>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Single exe, no IIS web.config or static-web-assets manifest next to it. -->
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.100" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.15" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.15" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.15" />
+  </ItemGroup>
+
+  <!-- The built web UI (web/dist, copied to wwwroot by `npm run build`) is embedded so the exe is self-contained. -->
+  <ItemGroup>
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Include="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Poe1.Tests" />
+  </ItemGroup>
+
+</Project>
