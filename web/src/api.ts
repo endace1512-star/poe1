@@ -177,6 +177,80 @@ export interface LevelingState {
   character: LevelEvent | null;
 }
 
+export interface SavedBuild {
+  id: number;
+  name: string;
+  source: string | null;
+  character: string | null;
+  createdTs: string;
+}
+
+export interface StageOption {
+  index: number;
+  title: string;
+  match: number;
+  levelHint: number | null;
+}
+
+export interface StageInfo {
+  specs: StageOption[];
+  itemSets: StageOption[];
+  skillSets: StageOption[];
+  detectedSpec: number;
+  detectedItemSet: number;
+  detectedSkillSet: number;
+  spec: number;
+  itemSet: number;
+  skillSet: number;
+}
+
+export interface ItemView {
+  name: string;
+  baseType: string;
+  rarity: string;
+  links: number;
+  sockets: string | null;
+  implicits: string[];
+  explicits: string[];
+  icon: string | null;
+}
+
+export interface SlotReport {
+  key: string;
+  slot: string;
+  status: "ok" | "partial" | "missing" | "empty";
+  score: number;
+  ignored: string | null;
+  build: ItemView;
+  current: ItemView | null;
+  mods: { text: string; state: "ok" | "low" | "missing"; current: string | null }[];
+  stats: { stat: string; build: number; current: number }[];
+  notes: string[];
+}
+
+export interface GemGroupReport {
+  key: string;
+  label: string;
+  slot: string | null;
+  status: "ok" | "partial" | "missing";
+  ignored: string | null;
+  linked: boolean;
+  gems: { name: string; support: boolean; buildLevel: number; buildQuality: number; state: "ok" | "low" | "elsewhere" | "missing"; currentLevel: number | null; where: string | null }[];
+}
+
+export interface BuildReport {
+  character: { name: string; level: number | null; class: string | null; fetchedAt: string; demo: boolean };
+  buildClass: string;
+  buildAscendancy: string | null;
+  buildLevel: number;
+  stage: StageInfo;
+  summary: { ok: number; partial: number; missing: number; ignored: number; gemGroupsOk: number; gemGroupsTotal: number; score: number };
+  slots: SlotReport[];
+  gems: GemGroupReport[];
+  jewels: SlotReport[];
+  tree: { allocated: number; target: number; matched: number; missingNotables: string[]; missingOther: number; extraNotables: string[]; extraOther: number; url: string | null };
+}
+
 export class ApiError extends Error {}
 
 async function request<T>(method: string, url: string, body?: unknown): Promise<T> {
@@ -223,6 +297,15 @@ export const api = {
   farmStop: (id: number) => request<FarmReport>("POST", `/api/farm/${id}/stop`),
   farmUpdate: (id: number, name: string, notes: string | null) => request<void>("PUT", `/api/farm/${id}`, { name, notes }),
   farmDelete: (id: number) => request<void>("DELETE", `/api/farm/${id}`),
+
+  builds: () => request<SavedBuild[]>("GET", "/api/builds"),
+  importBuild: (input: string) => request<SavedBuild>("POST", "/api/builds", { input }),
+  updateBuild: (id: number, p: { name?: string; character?: string }) => request<void>("PUT", `/api/builds/${id}`, p),
+  deleteBuild: (id: number) => request<void>("DELETE", `/api/builds/${id}`),
+  ignoreBuildItem: (id: number, key: string, reason: string | null) => request<void>("PUT", `/api/builds/${id}/ignore`, { key, reason }),
+  buildCharacters: () => request<Character[]>("GET", "/api/builds/characters"),
+  buildReport: (id: number, p: { character?: string; spec?: number; itemSet?: number; skillSet?: number; refresh?: boolean }) =>
+    request<BuildReport>("GET", `/api/builds/${id}/report${qs({ ...p, refresh: p.refresh ? "true" : undefined })}`),
 
   levelingState: () => request<LevelingState>("GET", "/api/leveling/state"),
   simulateArea: (areaId: string, level?: number) => request<void>("POST", "/api/leveling/simulate", { areaId, level }),

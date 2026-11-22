@@ -29,6 +29,17 @@ public sealed partial class PoeItem
     [JsonPropertyName("influences")] public Dictionary<string, bool>? Influences { get; set; }
     [JsonPropertyName("enchantMods")] public List<string>? EnchantMods { get; set; }
     [JsonPropertyName("explicitMods")] public List<string>? ExplicitMods { get; set; }
+    [JsonPropertyName("implicitMods")] public List<string>? ImplicitMods { get; set; }
+    [JsonPropertyName("craftedMods")] public List<string>? CraftedMods { get; set; }
+    [JsonPropertyName("fracturedMods")] public List<string>? FracturedMods { get; set; }
+    /// <summary>For an item socketed in another item: index into the parent's <see cref="Sockets"/>.</summary>
+    [JsonPropertyName("socket")] public int? Socket { get; set; }
+    [JsonPropertyName("support")] public bool? Support { get; set; }
+
+    /// <summary>Every mod line on the item (implicit, enchant, explicit, crafted, fractured).</summary>
+    public IEnumerable<string> AllMods =>
+        (ImplicitMods ?? new()).Concat(EnchantMods ?? new()).Concat(FracturedMods ?? new())
+            .Concat(ExplicitMods ?? new()).Concat(CraftedMods ?? new());
 
     [GeneratedRegex("<<[^>]*>>")]
     private static partial Regex MarkupRegex();
@@ -108,5 +119,13 @@ public sealed class CharacterInfo
 
 public sealed class CharacterItemsResponse
 {
+    [JsonPropertyName("items")] public List<PoeItem> Items { get; set; } = new();
+}
+
+public sealed class PassiveSkillsResponse
+{
+    /// <summary>Allocated passive node ids.</summary>
+    [JsonPropertyName("hashes")] public List<int> Hashes { get; set; } = new();
+    /// <summary>Jewels socketed in the passive tree.</summary>
     [JsonPropertyName("items")] public List<PoeItem> Items { get; set; } = new();
 }

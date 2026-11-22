@@ -58,6 +58,13 @@ public sealed class PoeApiClient
         return res.Items;
     }
 
+    public async Task<PassiveSkillsResponse> GetPassiveSkillsAsync(string character, CancellationToken ct)
+    {
+        var s = RequireAccount();
+        var url = $"{BaseUrl}/character-window/get-passive-skills?accountName={Uri.EscapeDataString(s.AccountName)}&realm={Uri.EscapeDataString(s.Realm)}&character={Uri.EscapeDataString(character)}";
+        return await GetAsync<PassiveSkillsResponse>(url, s, ct);
+    }
+
     public async Task<List<string>> GetLeaguesAsync(CancellationToken ct)
     {
         using var req = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/api/leagues?type=main&realm=pc");

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Extensions.FileProviders;
 using Poe1.Api;
+using Poe1.Builds;
 using Poe1.Infrastructure;
 using Poe1.Leveling;
 using Poe1.Poe;
@@ -34,6 +35,8 @@ builder.Services.AddSingleton<SnapshotService>();
 builder.Services.AddSingleton<PriceAlerts>();
 builder.Services.AddSingleton<FarmService>();
 builder.Services.AddSingleton<ClientLogWatcher>();
+builder.Services.AddSingleton(new DemoMode(demo));
+builder.Services.AddSingleton<CharacterGearService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<ClientLogWatcher>());
 if (!demo) builder.Services.AddHostedService<SnapshotScheduler>();
 
@@ -48,6 +51,19 @@ builder.Services.AddHttpClient<NinjaClient>(c =>
     c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
     c.Timeout = TimeSpan.FromSeconds(60);
 }).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
+
+// Build tab: PoB links (pobb.in, pastebin, poe.ninja) and GGG's passive tree export.
+builder.Services.AddHttpClient("web", c =>
+{
+    c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+    c.Timeout = TimeSpan.FromSeconds(60);
+});
+builder.Services.AddSingleton(sp => new PassiveTreeData(
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("web"),
+    sp.GetRequiredService<AppPaths>(), sp.GetRequiredService<ILogger<PassiveTreeData>>()));
+builder.Services.AddSingleton(sp => new BuildService(
+    sp.GetRequiredService<Database>(), sp.GetRequiredService<IHttpClientFactory>().CreateClient("web"),
+    sp.GetRequiredService<CharacterGearService>(), sp.GetRequiredService<PassiveTreeData>(), sp.GetRequiredService<DemoMode>()));
 
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 

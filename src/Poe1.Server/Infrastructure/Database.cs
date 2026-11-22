@@ -84,6 +84,22 @@ public sealed class Database
                 end_snapshot_id    INTEGER REFERENCES snapshots(id),
                 notes              TEXT
             );
+
+            CREATE TABLE IF NOT EXISTS builds (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                name        TEXT    NOT NULL,
+                source      TEXT,
+                xml         TEXT    NOT NULL,
+                character   TEXT,
+                created_ts  TEXT    NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS build_ignores (
+                build_id  INTEGER NOT NULL REFERENCES builds(id) ON DELETE CASCADE,
+                key       TEXT    NOT NULL,
+                reason    TEXT    NOT NULL,
+                PRIMARY KEY (build_id, key)
+            );
             """);
     }
 }

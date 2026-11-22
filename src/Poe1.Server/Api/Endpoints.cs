@@ -1,3 +1,4 @@
+using Poe1.Builds;
 using Poe1.Infrastructure;
 using Poe1.Leveling;
 using Poe1.Poe;
@@ -26,6 +27,9 @@ public sealed record SettingsUpdate(
 public sealed record FarmStartRequest(string? Name);
 public sealed record FarmUpdateRequest(string Name, string? Notes);
 public sealed record SimulateAreaRequest(string AreaId, int? Level);
+public sealed record BuildImportRequest(string Input);
+public sealed record BuildUpdateRequest(string? Name, string? Character);
+public sealed record BuildIgnoreRequest(string Key, string? Reason);
 
 public static class Endpoints
 {
@@ -166,6 +170,16 @@ public static class Endpoints
         api.MapPut("/farm/{id:long}", (long id, FarmUpdateRequest req, FarmService farm) => { farm.Update(id, req.Name, req.Notes); return Results.NoContent(); });
         api.MapDelete("/farm/{id:long}", (long id, FarmService farm) => { farm.Delete(id); return Results.NoContent(); });
 
+        // ---- Build comparison ----
+        api.MapGet("/builds", (BuildService b) => b.List());
+        api.MapPost("/builds", (BuildImportRequest req, BuildService b, CancellationToken ct) => Guard(async () => await b.ImportAsync(req.Input, ct)));
+        api.MapPut("/builds/{id:long}", (long id, BuildUpdateRequest req, BuildService b) => { b.Update(id, req.Name, req.Character); return Results.NoContent(); });
+        api.MapDelete("/builds/{id:long}", (long id, BuildService b) => { b.Delete(id); return Results.NoContent(); });
+        api.MapPut("/builds/{id:long}/ignore", (long id, BuildIgnoreRequest req, BuildService b) => { b.SetIgnore(id, req.Key, req.Reason); return Results.NoContent(); });
+        api.MapGet("/builds/characters", (BuildService b, CancellationToken ct) => Guard(async () => await b.CharactersAsync(ct)));
+        api.MapGet("/builds/{id:long}/report", (long id, string? character, int? spec, int? itemSet, int? skillSet, bool? refresh, BuildService b, CancellationToken ct) =>
+            Guard(async () => await b.ReportAsync(id, character, spec, itemSet, skillSet, refresh ?? false, ct)));
+
         // ---- Leveling ----
         api.MapGet("/leveling/state", (ClientLogWatcher w) => w.State);
         // Lets the UI (and tests) move the guide without the game running.
@@ -205,6 +219,14 @@ public static class Endpoints
         catch (InvalidOperationException e)
         {
             return Results.Json(new { error = e.Message }, statusCode: StatusCodes.Status409Conflict);
+        }
+        catch (FormatException e)
+        {
+            return Results.Json(new { error = e.Message }, statusCode: StatusCodes.Status400BadRequest);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return Results.Json(new { error = e.Message }, statusCode: StatusCodes.Status404NotFound);
         }
         catch (HttpRequestException e)
         {

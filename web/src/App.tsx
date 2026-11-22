@@ -11,6 +11,7 @@ import { FarmPage } from "./pages/FarmPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { ComingSoonPage } from "./pages/ComingSoonPage";
 import { LevelingPage } from "./leveling/LevelingPage";
+import { BuildPage } from "./pages/BuildPage";
 
 const PAGES = [
   { id: "overview", label: "Tổng quan" },
@@ -19,6 +20,7 @@ const PAGES = [
   { id: "alerts", label: "Cảnh báo giá" },
   { id: "farm", label: "Phiên farm" },
   { id: "leveling", label: "Leveling" },
+  { id: "build", label: "So build" },
   { id: "timeless", label: "Timeless", soon: true },
   { id: "flip", label: "Flip", soon: true },
   { id: "regex", label: "Regex", soon: true },
@@ -162,7 +164,7 @@ export function App() {
       </nav>
 
       <main>
-        {status?.lastError && !status.running && page !== "leveling" && (
+        {status?.lastError && !status.running && page !== "leveling" && page !== "build" && (
           <div className="notice error" style={{ marginBottom: 16 }}>
             Snapshot gần nhất lỗi: {status.lastError}
           </div>
@@ -175,6 +177,7 @@ export function App() {
         )}
         {page === "farm" && <FarmPage divine={divine} dataVersion={dataVersion} />}
         {page === "leveling" && <LevelingPage />}
+        {page === "build" && <BuildPage />}
         {page === "settings" && <SettingsPage onSaved={setSettings} />}
         {(page === "timeless" || page === "flip" || page === "regex" || page === "patch") && <ComingSoonPage page={page} />}
       </main>

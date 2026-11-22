@@ -13,10 +13,22 @@ Không phải đăng nhập tài khoản vào trang web của bên thứ ba: POE
 | **Cảnh báo giá** | Món đang giữ đổi giá ≥ X% so với 1 giờ / 6 giờ / hôm qua / tuần trước, kèm thông báo desktop sau mỗi snapshot |
 | **Phiên farm** | Bắt đầu / kết thúc phiên, tính loot thu được, chaos/giờ, món đã dùng |
 | **Leveling** | Lộ trình Act 1–10 từng bước, **ảnh layout của từng khu vực**, tự chuyển bước khi bạn đổi khu vực (đọc `Client.txt`), nhập build Path of Building để biết gem nào lấy từ quest, gem nào mua ở NPC |
+| **So build** | Dán link pobb.in / pastebin / poe.ninja hoặc mã PoB: tool đoán bạn đang ở giai đoạn nào của build (theo cây passive và level), so từng món đồ, gem, jewel, cây passive với build; tick **Bỏ qua** cho món đã có đồ tương tự hoặc không mua/craft được |
 | Timeless, Flip, Regex, Patch game | Sắp có (xem *Kế hoạch*) |
 
 Giá lấy từ [poe.ninja](https://poe.ninja): currency, fragment, div card, essence, thread/scarab, unique (theo số link),
 gem (theo level/quality/corrupt), base item (theo ilvl và influence), cluster jewel, map…
+
+### So build hoạt động thế nào
+
+- Đồ của nhân vật đọc từ pathofexile.com (cần POESESSID như phần Net worth). Game lưu nhân vật lên server khi bạn đổi khu vực,
+  nên khi đang chơi, tab tự làm mới mỗi lần bạn qua map (nhờ `Client.txt`, tối đa 1 lần/phút).
+- **Giai đoạn**: build hướng dẫn thường có nhiều cây passive / bộ đồ / bộ gem (Level 40, Level 70, Endgame…).
+  Tool chọn cây giống cây của bạn nhất; nếu không đọc được cây thì dựa vào level trong tên giai đoạn. Bạn chọn lại tay được, và có nút *Giai đoạn tiếp*.
+- **Đồ**: unique so theo tên; rare/magic so từng dòng mod (đủ / thấp hơn / thiếu) và tổng Life, kháng, thuộc tính; kèm số link.
+  Nhẫn và flask được ghép cặp tự động dù bạn đeo khác ô.
+- **Gem**: có / level thấp / ở chỗ khác / thiếu, và có nằm chung một nhóm link không.
+- **Cây passive**: số điểm khớp, notable/keystone còn thiếu và điểm đang có mà build không lấy (cần respec). Tên node lấy từ dữ liệu cây chính thức của GGG.
 
 ## Cài và chạy (Windows)
 
@@ -79,6 +91,8 @@ tests/Poe1.Tests/       xUnit
 - Lộ trình leveling và dữ liệu khu vực/quest/gem: [exile-leveling](https://github.com/HeartofPhos/exile-leveling) (MIT).
 - Ảnh layout khu vực: [Exile-UI](https://github.com/Lailloken/Exile-UI) (MIT).
 - Giá: [poe.ninja](https://poe.ninja).
+- Cách đọc build PoB: theo định dạng của [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding) (MIT); build mẫu dùng trong test lấy từ repo này.
+- Tên node cây passive: [grindinggear/skilltree-export](https://github.com/grindinggear/skilltree-export) (tải lúc chạy).
 
 Chi tiết giấy phép ở [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 Path of Exile là thương hiệu của Grinding Gear Games; dự án này không liên kết với GGG.
